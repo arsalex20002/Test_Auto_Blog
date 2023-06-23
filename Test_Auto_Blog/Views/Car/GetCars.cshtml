@@ -1,0 +1,15 @@
+﻿@model IEnumerable<Test_Auto_Blog.Domain.Models.Car> 
+
+@{
+	ViewBag.Title = "title";
+
+}
+@foreach(var car in Model)
+{
+	<p>@car.Id</p>
+	<p>@car.Name</p>
+	<p>@car.Description</p>
+	<p>@car.Model</p>
+	<p>@car.DateCreate</p>
+	<p>@car.TypeCar</p>
+}
