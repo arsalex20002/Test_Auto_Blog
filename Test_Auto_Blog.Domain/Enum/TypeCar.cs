@@ -12,7 +12,7 @@ namespace Test_Auto_Blog.Domain.Enum
         Bus = 2,
         [Display(Name = "Седан")]
         Sedan = 3,
-        [Display(Name = "Спортвная машина")]
+        [Display(Name = "Спортивная машина")]
         SportCar = 4
 
     }
