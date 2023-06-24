@@ -37,5 +37,13 @@ namespace Test_Auto_Blog.DAL.Repositories
         {
             return await _context.Cars.ToListAsync();
         }
+
+        public async Task<Car> Update(Car model)
+        {
+            _context.Cars.Update(model);
+            await _context.SaveChangesAsync();
+
+            return model;
+        }
     }
 }

@@ -118,6 +118,7 @@ namespace Test_Auto_Blog.Service.Implementations
 					return sqlResponse;
 				}
 				sqlResponse.Data = car;
+				sqlResponse.Status = ErrorStatus.Success;
 				return sqlResponse;
 			}
 			catch (Exception ex)
@@ -158,6 +159,42 @@ namespace Test_Auto_Blog.Service.Implementations
 					Status = ErrorStatus.CarNotFound,
 				};
 			}
+		}
+
+		public async Task<IBaseResponse<Car>> Edit(int id, CarViewModel model)
+		{
+			var sqlResponse = new BaseResponse<Car>();
+
+			try
+			{
+				var car = await _carRepository.GetById(id);
+                if (car == null)
+                {
+					sqlResponse.Status = ErrorStatus.CarNotFound;
+					sqlResponse.Description = "Машина не найдена";
+					return sqlResponse;
+                }
+
+				car.Description = model.Description;
+				car.Model = model.Model;
+				car.DateCreate = model.DateCreate;
+				//TypeCar
+				car.Name = model.Name;
+
+				await _carRepository.Update(car);
+
+				return sqlResponse;
+            }
+			catch (Exception ex)
+			{
+
+				return new BaseResponse<Car>()
+				{
+					Description = $"[GetCar] : {ex.Message}",
+					Status = ErrorStatus.CarNotFound,
+				};
+			}
+
 		}
 	}
 }

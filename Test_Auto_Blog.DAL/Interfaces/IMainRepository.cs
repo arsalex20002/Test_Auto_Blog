@@ -8,9 +8,11 @@ namespace Test_Auto_Blog.DAL.Interfaces
 
 		Task<bool> Delete(T model);
 
-        Task<List<Car>> Select();
+        Task<List<T>> Select();
 
-        Task<Car> GetById(int id);
+        Task<T> GetById(int id);
+
+        Task<T> Update(T model);
         
 
     }

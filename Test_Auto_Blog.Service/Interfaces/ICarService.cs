@@ -11,5 +11,6 @@ namespace Test_Auto_Blog.Service.Interfaces
 		public Task<IBaseResponse<Car>> GetCar(int id);
 		public Task<IBaseResponse<CarViewModel>> CreateCar(CarViewModel carViewModel);
 		public Task<IBaseResponse<bool>> DeleteCar(int id);
+		public Task<IBaseResponse<Car>> Edit(int id, CarViewModel model);
 	}
 }
