@@ -1,0 +1,47 @@
+﻿@model List<Test_Auto_Blog.Domain.Models.Post>
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<style>
+    .card-buttons-group {
+        text-align: right;
+        padding: 10px;
+    }
+</style>
+<div style="padding: 10px;"></div>
+
+<div class="row">
+    @foreach (var post in Model)
+    {
+        <div class="row row-cols-1 col-md-4 text-center">
+            <div class="col" style="padding: 10px;">
+                <div class="card">
+                    <img src="data:image/jpeg;base64,@Convert.ToBase64String(post?.Avatar ?? Array.Empty<byte>())" class="card-img-top" alt="@post.Name">
+                    <div class="card-body">
+                        <h5 class="card-title">@post.Name</h5>
+                        <p class="card-text">@post.Description</p>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">@post.DateCreate</li>
+                        <li class="list-group-item">@post.EditTime</li>
+                        <li class="list-group-item">@post.IsPublic</li>
+                        <li class="list-group-item">@post.</li>
+                    </ul>
+                    <div class="card-body">
+                        <a asp-action="GetPost" asp-route-id="@post.Id" class="card-link">Перейти</a>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <hr />
+                            <a asp-controller="Post" asp-action="Delete" asp-route-id="@post.Id" class="btn btn-danger">Удалить</a>
+                            <a asp-controller="Post" asp-action="Edit" asp-route-id="@post.Id" class="btn btn-primary">Изменить</a>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+

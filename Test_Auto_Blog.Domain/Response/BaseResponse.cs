@@ -4,7 +4,7 @@ namespace Test_Auto_Blog.Domain.Response
 {
 	public interface IBaseResponse<T>
 	{
-		T Data { get; set; }
+		public T Data { get; set; }
 		ErrorStatus Status { get; set; }
 		public string Description { get; set; }
 	}

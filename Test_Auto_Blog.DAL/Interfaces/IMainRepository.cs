@@ -1,19 +1,13 @@
-﻿using Test_Auto_Blog.Domain.Models;
-
-namespace Test_Auto_Blog.DAL.Interfaces
+﻿namespace Test_Auto_Blog.DAL.Interfaces
 {
     public interface IMainRepository<T>
     {
-        Task<bool> Create(T model);
+        Task Create(T entity);
 
-		Task<bool> Delete(T model);
+        IQueryable<T> GetAll();
 
-        Task<List<T>> Select();
+        Task Delete(T entity);
 
-        Task<T> GetById(int id);
-
-        Task<T> Update(T model);
-        
-
+        Task<T> Update(T entity);
     }
 }

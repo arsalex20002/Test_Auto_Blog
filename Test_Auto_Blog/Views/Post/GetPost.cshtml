@@ -1,5 +1,5 @@
 ﻿﻿
-@model Test_Auto_Blog.Domain.ViewModels.Car.CarViewModel
+@model Test_Auto_Blog.Domain.ViewModels.Post.PostViewModel
 
 @{
     ViewBag.Title = "title";
@@ -10,7 +10,7 @@
 <div class="card mb-3">
     <div class="row g-0">
         <div class="col-md-4">
-            <img src="https://images.wallpaperscraft.ru/image/single/mercedes_benz_s_class_w222_112850_800x600.jpg" 
+            <img src="data:image/jpeg;base64,@Convert.ToBase64String(Model?.Image ?? Array.Empty<byte>())"
                  class="img-fluid rounded-start rounded" alt="@Model?.Name">
         </div>
         <div class="col-md-4">
@@ -18,7 +18,10 @@
                 <h5 class="card-title text-center">@Model?.Name</h5>
                 <p class="card-text"><b>Описание: </b>@Model?.Description</p>
                 <p class="card-text"><b>Тип: </b></p>
-                <p class="card-text"><small class="text-muted">Дата выпуска - @Model?.DateCreate</small></p>
+                <p class="card-text"><small class="text-muted">Дата Создание поста - @Model?.DateCreate</small></p>
+                <p class="card-text"><small class="text-muted">Дата Создание Редактирования поста - @Model?.EditTime</small></p>
+                <p class="card-text"><small class="text-muted">Публичный ? - @Model?.IsPublic</small></p>
+                <p class="card-text"><small class="text-muted">Пост про - @Model?.Car</small></p>
             </div>
         </div>
         <div class="col-md-4">
