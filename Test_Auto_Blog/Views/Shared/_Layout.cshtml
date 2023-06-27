@@ -30,6 +30,10 @@
                         else
                         {
                             <a href="/Myprofile/@User.Identity.Name">Мои блоги</a>
+                            if(User.IsInRole("Admin"))
+                            {
+                                <a asp-controller="User" asp-action="UserPanel">Аккаунты</a>
+                            }
                             <a asp-controller="User" asp-action="Logout">Выйти</a>
                         }
                     </div>

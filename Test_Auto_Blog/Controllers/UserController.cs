@@ -4,8 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Test_Auto_Blog.Domain.ViewModels.User;
 using Test_Auto_Blog.Service.Interfaces;
-using Test_Auto_Blog.Domain.ViewModels.Post;
 using Test_Auto_Blog.Domain.Enum;
+using Microsoft.AspNetCore.Authorization;
+using Test_Auto_Blog.Service.Implementations;
 
 namespace Test_Auto_Blog.Controllers
 {
@@ -19,6 +20,28 @@ namespace Test_Auto_Blog.Controllers
             _userService = userService;
             _postService = postService;
         }
+
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var response = await _userService.DeleteUser(id);
+            if (response.Status == ErrorStatus.Success)
+            {
+                return RedirectToAction("GetPosts","Post");
+            }
+            return View("Error", $"{response.Description}");
+        }
+
+        public async Task<IActionResult> UserPanel()
+        {
+            var response = await _userService.GetUsers();
+            if (response.Status == ErrorStatus.Success)
+            {
+                return View(response.Data.ToList());
+            }
+            return View("Error", $"{response.Description}");
+        }
+
         [HttpGet]
         public async Task<IActionResult> Account()
         {
@@ -82,7 +105,7 @@ namespace Test_Auto_Blog.Controllers
             if (ModelState.IsValid)
             {
                 var response = await _userService.Register(model);
-                if (response.Status == Domain.Enum.ErrorStatus.Success)
+                if (response.Status == ErrorStatus.Success)
                 {
                     await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
                         new ClaimsPrincipal(response.Data));

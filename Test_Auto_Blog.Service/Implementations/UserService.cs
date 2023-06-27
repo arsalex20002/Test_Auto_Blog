@@ -151,9 +151,50 @@ namespace Test_Auto_Blog.Service.Implementations
             throw new NotImplementedException();
         }
 
-        public Task<IBaseResponse<bool>> DeleteUser(int id)
+        
+
+        public async Task<IBaseResponse<bool>> DeleteUser(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var user = await _UserRepository.GetAll().FirstOrDefaultAsync(x => x.Id == id);
+
+                if (user == null)
+                {
+                    return new BaseResponse<bool>()
+                    {
+                        Description = "user not found",
+                        Status = ErrorStatus.UserNotFound,
+                        Data = false
+                    };
+                }
+
+                if (user.Role == Role.Admin)
+                {
+                    return new BaseResponse<bool>()
+                    {
+                        Description = "Вы не можете удалить аккаунт с правами равными вашим",
+                        Status = ErrorStatus.InternalServerError,
+                        Data = false
+                    };
+                }
+
+                await _UserRepository.Delete(user);
+
+                return new BaseResponse<bool>()
+                {
+                    Data = true,
+                    Status = ErrorStatus.Success
+                };
+            }
+            catch (Exception ex)
+            {
+                return new BaseResponse<bool>()
+                {
+                    Description = $"[DeleteCar] : {ex.Message}",
+                    Status = ErrorStatus.InternalServerError
+                };
+            }
         }
 
         public Task<IBaseResponse<User>> Edit(int id, UserViewModel model)
@@ -200,9 +241,34 @@ namespace Test_Auto_Blog.Service.Implementations
             }
         }
 
-        public Task<IBaseResponse<IEnumerable<User>>> GetUsers()
+        public async Task<IBaseResponse<IEnumerable<User>>> GetUsers()
         {
-            throw new NotImplementedException();
+            try
+            {
+                var user = _UserRepository.GetAll();
+                if (!user.Any())
+                {
+                    return new BaseResponse<IEnumerable<User>>()
+                    {
+                        Description = "Найдено 0 элементов",
+                        Status = ErrorStatus.CarNotFound
+                    };
+                }
+
+                return new BaseResponse<IEnumerable<User>>()
+                {
+                    Data = user,
+                    Status = ErrorStatus.Success
+                };
+            }
+            catch (Exception ex)
+            {
+                return new BaseResponse<IEnumerable<User>>()
+                {
+                    Description = $"[GetUsers] : {ex.Message}",
+                    Status = ErrorStatus.InternalServerError
+                };
+            }
         }
     }
 }

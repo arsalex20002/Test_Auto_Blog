@@ -245,11 +245,11 @@ namespace Test_Auto_Blog.Service.Implementations
                 };
             }
         }
-        public async Task<IBaseResponse<IEnumerable<Post>>> GetPosts(string Name = "No value")
+        public async Task<IBaseResponse<IEnumerable<Post>>> GetPosts(string typeCar = null, string Name = null, int PostDate = 0, int CarDate = 0)
         {
             try
             {
-                var posts = _postRepository.GetAll();
+                var posts = _postRepository.GetAll().Where(x => x.IsPublic == true);
                 if (!posts.Any())
                 {
                     return new BaseResponse<IEnumerable<Post>>()
@@ -258,6 +258,44 @@ namespace Test_Auto_Blog.Service.Implementations
                         Status = ErrorStatus.CarNotFound
                     };
                 }
+                if(PostDate != 0)
+                {
+                    posts = posts.Where(x => x.DateCreate.Year == PostDate);
+                }
+                if (typeCar != null && typeCar != "all")
+                {
+                    var carTypeCheck = await _carService.GetCars();
+                    foreach (var post in posts)
+                    {
+                        if (carTypeCheck.Data.ElementAt(post.CarId - 1).TypeCar.ToString() != typeCar)
+                        {
+                            posts = posts.Where(x => x.Id != post.Id);
+                        }
+                    }
+                }
+                if (CarDate != 0)
+                {
+                    var carDateCheck = await _carService.GetCars();
+                    foreach (var post in posts)
+                    {
+                        if (carDateCheck.Data.ElementAt(post.CarId - 1).DateCreate.Year != CarDate)
+                        {
+                            posts = posts.Where(x => x.Id != post.Id);
+                        }
+                    }
+                }
+                if(Name != null && Name != "0")
+                {
+                    var carNameCheck = await _carService.GetCars();
+                    foreach (var post in posts)
+                    {
+                        if (carNameCheck.Data.ElementAt(post.CarId - 1).Name != Name)
+                        {
+                            posts = posts.Where(x => x.Id != post.Id);
+                        }
+                    }
+                }
+
 
                 return new BaseResponse<IEnumerable<Post>>()
                 {

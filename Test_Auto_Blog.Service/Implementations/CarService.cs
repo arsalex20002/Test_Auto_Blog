@@ -17,6 +17,21 @@ namespace Test_Auto_Blog.Service.Implementations
             _carRepository = carRepository;
         }
 
+        public Task<IBaseResponse<Car>> Create(CarViewModel car)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IBaseResponse<bool>> DeleteCar(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IBaseResponse<Car>> Edit(int id, CarViewModel model)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<IBaseResponse<CarViewModel>> GetCar(int id)
         {
             try
@@ -55,68 +70,6 @@ namespace Test_Auto_Blog.Service.Implementations
             }
         }
 
-        public async Task<IBaseResponse<Car>> Create(CarViewModel model)
-        {
-            try
-            {
-                var car = new Car()
-                {
-                    Name = model.Name,
-                    Description = model.Description,
-                    DateCreate = DateTime.Now,
-                    TypeCar = (TypeCar)Enum.Parse(typeof(TypeCar), model.TypeCar),
-                };
-                await _carRepository.Create(car);
-
-                return new BaseResponse<Car>()
-                {
-                    Status = ErrorStatus.Success,
-                    Data = car
-                };
-            }
-            catch (Exception ex)
-            {
-                return new BaseResponse<Car>()
-                {
-                    Description = $"[Create] : {ex.Message}",
-                    Status = ErrorStatus.InternalServerError
-                };
-            }
-        }
-
-        public async Task<IBaseResponse<bool>> DeleteCar(int id)
-        {
-            try
-            {
-                var car = await _carRepository.GetAll().FirstOrDefaultAsync(x => x.Id == id);
-                if (car == null)
-                {
-                    return new BaseResponse<bool>()
-                    {
-                        Description = "Car not found",
-                        Status = ErrorStatus.CarNotFound,
-                        Data = false
-                    };
-                }
-
-                await _carRepository.Delete(car);
-
-                return new BaseResponse<bool>()
-                {
-                    Data = true,
-                    Status = ErrorStatus.Success
-                };
-            }
-            catch (Exception ex)
-            {
-                return new BaseResponse<bool>()
-                {
-                    Description = $"[DeleteCar] : {ex.Message}",
-                    Status = ErrorStatus.InternalServerError
-                };
-            }
-        }
-
         public async Task<IBaseResponse<Car>> GetCarByName(string name)
         {
             try
@@ -142,43 +95,6 @@ namespace Test_Auto_Blog.Service.Implementations
                 return new BaseResponse<Car>()
                 {
                     Description = $"[GetCarByName] : {ex.Message}",
-                    Status = ErrorStatus.InternalServerError
-                };
-            }
-        }
-
-        public async Task<IBaseResponse<Car>> Edit(int id, CarViewModel model)
-        {
-            try
-            {
-                var car = await _carRepository.GetAll().FirstOrDefaultAsync(x => x.Id == id);
-                if (car == null)
-                {
-                    return new BaseResponse<Car>()
-                    {
-                        Description = "Car not found",
-                        Status = ErrorStatus.CarNotFound
-                    };
-                }
-
-                car.Description = model.Description;
-                car.DateCreate = model.DateCreate;
-                car.Name = model.Name;
-
-                await _carRepository.Update(car);
-
-
-                return new BaseResponse<Car>()
-                {
-                    Data = car,
-                    Status = ErrorStatus.Success,
-                };
-            }
-            catch (Exception ex)
-            {
-                return new BaseResponse<Car>()
-                {
-                    Description = $"[Edit] : {ex.Message}",
                     Status = ErrorStatus.InternalServerError
                 };
             }

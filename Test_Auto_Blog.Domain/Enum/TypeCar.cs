@@ -5,15 +5,15 @@ namespace Test_Auto_Blog.Domain.Enum
     public enum TypeCar
     {
         [Display(Name = "Легковой автомобиль")]
-        PassengerCar = 0,
+        lightCar = 0,
         [Display(Name = "Грузовой автомобиль")]
-        Truck = 1,
+        truck = 1,
         [Display(Name = "Автобус")]
-        Bus = 2,
+        bus = 2,
         [Display(Name = "Седан")]
-        Sedan = 3,
+        sedan = 3,
         [Display(Name = "Спортивная машина")]
-        SportCar = 4
+        sportCar = 4
 
     }
 }

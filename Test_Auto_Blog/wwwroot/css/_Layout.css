@@ -10,10 +10,20 @@
     height: 5vh;
 }
 .nav-menu-item {
+        
     width:10vw;
     margin: 5px;
     padding: 5px;
     font-size:2vw;
+}
+
+.nav-menu-item a {
+    text-decoration: none;
+    color:black
+}
+
+.nav-menu-item a:hover {
+    color:grey;
 }
 
 .nav-menu {
@@ -66,6 +76,7 @@
 
 /* Links inside the dropdown */
 .dropdown-content a {
+
     color: black;
     padding: 12px 16px;
     text-decoration: none;

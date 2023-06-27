@@ -14,6 +14,19 @@ namespace Test_Auto_Blog.Controllers
             _carService = carService;
         }
 
+        public async Task<IActionResult> GetCarModels()
+        {
+            var response = await _carService.GetCars();
+
+            var models = new List<string>();
+            foreach (var item in response.Data)
+            { 
+                models.Add(item.Name);
+            }
+
+            return Json(models);
+        }
+
         [HttpGet]
         public async Task<IActionResult> GetCars()
         {
@@ -34,51 +47,6 @@ namespace Test_Auto_Blog.Controllers
                 return View(response.Data);
             }
             return View("Error", $"{response.Description}");
-        }
-
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Delete(int id)
-        {
-            var response = await _carService.DeleteCar(id);
-            if (response.Status == Domain.Enum.ErrorStatus.Success)
-            {
-                return RedirectToAction("GetCars");
-            }
-            return View("Error", $"{response.Description}");
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> Save(int id)
-        {
-            if (id == 0)
-                return View();
-
-            var response = await _carService.GetCar(id);
-            if (response.Status == Domain.Enum.ErrorStatus.Success)
-            {
-                return View(response.Data);
-            }
-            return View("Error", $"{response.Description}");
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Save(CarViewModel model)
-        {
-            ModelState.Remove("DateCreate");
-            if (ModelState.IsValid)
-            {
-                if (model.Id == 0)
-                {
-
-                    await _carService.Create(model);
-                }
-                else
-                {
-                    await _carService.Edit(model.Id, model);
-                }
-                return RedirectToAction("GetCars");
-            }
-            return View();
         }
 
     }
