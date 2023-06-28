@@ -41,8 +41,16 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Post}/{action=GetPosts}/{id?}");
 app.MapControllerRoute(
-        name: "MyProfile",
-        pattern: "Myprofile/{username}",
-        defaults: new { controller = "User", action = "Account" });
+    name: "GetPosts",
+    pattern: "{TypeCar=all}",
+    defaults: new { controller = "Post", action = "GetPosts" });
+app.MapControllerRoute(
+    name: "GetPost",
+    pattern: "{TypeCar=all}",
+    defaults: new { controller = "Post", action = "GetPost" });
+app.MapControllerRoute(
+    name: "MyProfile",
+    pattern: "Myprofile/{username}",
+    defaults: new { controller = "User", action = "Account" });
 
 app.Run();
